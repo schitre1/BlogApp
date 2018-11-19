@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import { BrowserRouter, Route} from 'react-router-dom';
+import { BrowserRouter, Route, Switch} from 'react-router-dom';
 import promise from 'redux-promise';
 
 //BrowserRouter is for the history..it tells react to look at complete url to decide what to do
@@ -10,6 +10,7 @@ import promise from 'redux-promise';
 //import App from './components/app';
 import reducers from './reducers';
 import PostsIndex from './components/posts_index';
+import PostsNew from './components/posts_new';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -38,8 +39,18 @@ ReactDOM.render(
   <Provider store={createStoreWithMiddleware(reducers)}>
     <BrowserRouter>
       <div>
-        <Route path="/" component={PostsIndex}/>
+        <Switch>
+          <Route path="/posts/new" component={PostsNew}/>
+          <Route path="/" component={PostsIndex}/>
+        </Switch>
       </div>
     </BrowserRouter>
   </Provider>
   , document.querySelector('.container'));
+
+
+  //A bug seen with React router -  on hitting /posts/new we see both PostsIndex and PostsNew compoennts on screen
+  //Reason is it fuzzily matches path so basicallt /posts/new includes / or it will also include /posts, etc.
+  //To solve this, we add the switch component
+  //Make sure to put most specific routes at the top of the list inside switch
+  //Switch is going to check inside the list of routes and see what's the first route that matches the coming url pattern
