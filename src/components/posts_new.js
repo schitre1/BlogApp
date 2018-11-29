@@ -2,17 +2,23 @@ import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
 
 class PostsNew extends Component {
-    renderField(field){ //field obj contains some event handlers that we need to wire up to the jsx we are returning
+    renderField(field){  
+        const {meta: {touched, error}} = field; //destructuring and access properties from nested objects
+        const className = `form-group ${touched && error? 'has-danger':''}`;
+        
+        //field obj contains some event handlers that we need to wire up to the jsx we are returning
         //the input we enter should be tracked to the field component
         return (
-            <div className="form=group">
+            <div className={className}>
                 <label>{field.label}</label>
                 <input
                 className="form-control"
                 type="text"
                 {...field.input}
                 />
-                {field.meta.touched? field.meta.error: '' }
+                <div className="text-help">
+                    {touched? error: '' }
+                </div>
             </div>
         );
     }
