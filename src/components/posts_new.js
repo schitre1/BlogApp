@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import {Field, reduxForm} from 'redux-form';
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
+import {createPost} from '../actions';
 
 class PostsNew extends Component {
     renderField(field){  
@@ -27,7 +30,8 @@ class PostsNew extends Component {
 
     onSubmit(values){
         //this === our component
-        console.log(values);
+        //console.log(values);
+        this.props.createPost(values);
     }
 
     render(){
@@ -55,6 +59,7 @@ class PostsNew extends Component {
                 component={this.renderField}
                 />
                 <button type="submit" className="btn btn-primary">Submit</button>
+                <Link to="/" className="btn btn-danger">Cancel</Link>
             </form>
         );
     }
@@ -92,7 +97,11 @@ function validate(values){ //values name by convention, values is an obj that co
 export default reduxForm({
     validate,
     form: 'PostsNewForm' //multiple forms may exist on same page, make sure the string you assign to the form prop is unique, we don't want merged states bwtween two different forms
-})(PostsNew);
+})(
+    connect(null, {createPost})(PostsNew) //this is how we stack up multiple connect like helpers
+    );
 
 //reduxForm is a function that is similar to connect helper from 'react-redux'
 //reduxForm allows our component to communicate with the additional reducer that we wired in , formReducer
+
+//now how do we connect
