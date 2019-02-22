@@ -31,7 +31,12 @@ class PostsNew extends Component {
     onSubmit(values){
         //this === our component
         //console.log(values);
-        this.props.createPost(values);
+
+        this.props.createPost(values, () => {
+            this.props.history.push('/'); //go back to root route of our application
+        //how to only navigate after post is created
+        });
+        
     }
 
     render(){

@@ -11,6 +11,7 @@ import promise from 'redux-promise';
 import reducers from './reducers';
 import PostsIndex from './components/posts_index';
 import PostsNew from './components/posts_new';
+import PostsShow from './components/posts_show';
 
 const createStoreWithMiddleware = applyMiddleware(promise)(createStore);
 
@@ -41,13 +42,16 @@ ReactDOM.render(
       <div>
         <Switch>
           <Route path="/posts/new" component={PostsNew}/>
+          <Route path="/posts/:id" component={PostsShow}/>
           <Route path="/" component={PostsIndex}/>
         </Switch>
       </div>
     </BrowserRouter>
   </Provider>
   , document.querySelector('.container'));
+  //the order in which we define routes makes a big difference
 
+  //PostsNew component will have access to a bunch of props passed by the React Router
 
   //A bug seen with React router -  on hitting /posts/new we see both PostsIndex and PostsNew compoennts on screen
   //Reason is it fuzzily matches path so basicallt /posts/new includes / or it will also include /posts, etc.
