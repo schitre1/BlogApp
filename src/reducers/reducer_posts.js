@@ -1,4 +1,4 @@
-import {FETCH_POSTS, FETCH_POST} from '../actions'; //since we are importing from index.js we don't need to specify any file
+import {FETCH_POSTS, FETCH_POST, DELETE_POST} from '../actions'; //since we are importing from index.js we don't need to specify any file
 import _ from 'lodash';
 
 export default function (state = {}, action) { //default state is an obj
@@ -15,6 +15,10 @@ export default function (state = {}, action) { //default state is an obj
             // newState[post.id] = post;
             // return newState;
             return {...state, [ action.payload.data.id] : action.payload.data}; //same as above [] is for key interpolation , new key using id and value is data
+
+        case DELETE_POST:
+            return _.omit(state, action.payload);
+            //look at state obj, if it jhas key from payload, just remove it from the list.
         default:
         return state; //default is make no change to state and return
     }
